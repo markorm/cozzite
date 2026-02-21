@@ -2,23 +2,46 @@
 
 set -ouex pipefail
 
-### Install packages
+# Install COSMIC desktop and default COSMIC applications.
+dnf5 -y group install cosmic-desktop cosmic-desktop-apps
 
-# Packages can be installed from any enabled yum repo on the image.
-# RPMfusion repos are available by default in ublue main images
-# List of rpmfusion packages can be found here:
-# https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
+# Install Ghostty from COPR.
+dnf5 -y copr enable scottames/ghostty
+dnf5 -y install ghostty
+dnf5 -y copr disable scottames/ghostty
 
-# this installs a package from fedora repos
-dnf5 install -y tmux 
+# Install VS Code from the official Microsoft repository.
+rpm --import https://packages.microsoft.com/keys/microsoft.asc
+cat > /etc/yum.repos.d/vscode.repo <<'EOF'
+[code]
+name=Visual Studio Code
+baseurl=https://packages.microsoft.com/yumrepos/vscode
+enabled=1
+autorefresh=1
+type=rpm-md
+gpgcheck=1
+gpgkey=https://packages.microsoft.com/keys/microsoft.asc
+EOF
+dnf5 -y install code
 
-# Use a COPR Example:
-#
-# dnf5 -y copr enable ublue-os/staging
-# dnf5 -y install package
-# Disable COPRs so they don't end up enabled on the final image:
-# dnf5 -y copr disable ublue-os/staging
+# Install Zed from Terra.
+dnf5 -y install --enablerepo=terra zed
 
-#### Example for enabling a System Unit File
+# Install latest OpenCode binary.
+curl -fsSL \
+  https://github.com/anomalyco/opencode/releases/latest/download/opencode-linux-x64.tar.gz \
+  -o /tmp/opencode.tar.gz
+tar -xzf /tmp/opencode.tar.gz -C /usr/bin opencode
+chmod 0755 /usr/bin/opencode
+chown root:root /usr/bin/opencode
 
+# Prefer COSMIC greeter over GDM where possible.
+dnf5 -y remove gdm gnome-shell || true
+systemctl enable cosmic-greeter.service -f
+
+# Keep podman socket available (template default).
 systemctl enable podman.socket
+
+# Clean package metadata and temp files.
+dnf5 clean all
+rm -f /tmp/opencode.tar.gz
