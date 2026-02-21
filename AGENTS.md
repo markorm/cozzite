@@ -41,7 +41,7 @@
   - Single shell script lint: `shellcheck build_files/build.sh`.
   - Single Justfile syntax check: `just --unstable --fmt --check -f Justfile`.
   - Single package resolution check in container:
-    - `sudo podman run --rm ghcr.io/ublue-os/bazzite-gnome-nvidia-open:latest dnf5 repoquery zed`.
+    - `sudo podman run --rm ghcr.io/ublue-os/bazzite-gnome-nvidia-open:latest dnf5 repoquery cosmic-session`.
   - Single image smoke build:
     - `podman build --pull=newer --tag localhost/cozzite-nvidia-open:smoke .`.
 
@@ -112,7 +112,7 @@
 - Run `just build-iso`.
 - Confirm ISO exists at `output/bootiso/install.iso`.
 - Verify expected packages in built image where possible:
-  - `cosmic-session`, `cosmic-greeter`, `ghostty`, `code`, `zed`.
+  - `cosmic-session`, `cosmic-greeter`, `ghostty`, `code`.
 - Verify binary existence:
   - `command -v opencode` in the built image/runtime.
 
@@ -127,7 +127,7 @@
 - Desktop/session stack:
   - `cosmic-session`, `cosmic-greeter`, `xdg-desktop-portal-cosmic`.
 - Developer apps:
-  - `ghostty`, `code`, `zed`, `opencode`.
+  - `ghostty`, `code`, `opencode`.
 - Display manager behavior:
   - `display-manager.service` should point to COSMIC greeter.
 - GNOME reduction is best-effort:

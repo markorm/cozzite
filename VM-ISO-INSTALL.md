@@ -73,7 +73,7 @@ So the VM must be able to reach that registry image.
 After booting into the installed system, verify key packages:
 
 ```bash
-rpm -q cosmic-session cosmic-greeter ghostty code zed
+rpm -q cosmic-session cosmic-greeter ghostty code
 ```
 
 Verify `opencode` is present:

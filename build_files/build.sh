@@ -24,9 +24,6 @@ gpgkey=https://packages.microsoft.com/keys/microsoft.asc
 EOF
 dnf5 -y install code
 
-# Install Zed from Terra.
-dnf5 -y install --enablerepo=terra zed
-
 # Install latest OpenCode binary.
 curl -fsSL \
   https://github.com/anomalyco/opencode/releases/latest/download/opencode-linux-x64.tar.gz \
