@@ -31,13 +31,13 @@ Do not add personal/workstation apps to base variants in `main`.
 
 - `Containerfile`: build entrypoint, `BASE_IMAGE` selection via build arg
 - `build_files/build.sh`: all system customization logic
-- `.github/workflows/build.yml`: matrix container build + push + sign
+- `.github/workflows/build-main.yml`: matrix container build + push + sign
 - `README.md`: end-user rebase documentation
 - `AGENTS.md`: coding-agent guidance
 
 ## CI policy
 
-- `build.yml` builds the variant matrix and publishes to GHCR.
+- `build-main.yml` builds the variant matrix and publishes to GHCR.
 - Triggers: push/PR on `main`, `workflow_dispatch`, and nightly schedule.
 - Nightly build remains enabled to pick up upstream `latest` changes.
 - Keep workflow matrix aligned with `README.md` and `AGENTS.md`.
@@ -54,6 +54,6 @@ Do not add personal/workstation apps to base variants in `main`.
 - Keep shell scripts deterministic (`#!/bin/bash`, `set -ouex pipefail`).
 - Use `|| true` only for intentional best-effort steps.
 - When changing variants or naming, update all of:
-  - `.github/workflows/build.yml`
+  - `.github/workflows/build-main.yml`
   - `README.md`
   - `AGENTS.md`

@@ -26,12 +26,12 @@ Do not add personal/workstation apps to base variants in `main`.
 
 - `Containerfile`: base image selection and build entrypoint
 - `build_files/build.sh`: all OS customization logic
-- `.github/workflows/build.yml`: matrix build + publish to GHCR
+- `.github/workflows/build-main.yml`: matrix build + publish to GHCR
 - `README.md`: user-facing variant and rebase documentation
 
 ## Build workflow rules
 
-- Keep the variant matrix in `.github/workflows/build.yml` aligned with README.
+- Keep the variant matrix in `.github/workflows/build-main.yml` aligned with README.
 - Use `BASE_IMAGE` build arg per matrix entry.
 - Keep tags centered on `latest` + dated tags.
 - Keep nightly schedule enabled so upstream base updates are picked up.
