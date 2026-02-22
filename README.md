@@ -2,14 +2,14 @@
 
 Cozzite is a family of custom Bazzite-derived bootc images that replace the GNOME login/session default with COSMIC.
 
-Each base Cozzite image follows the same minimal customization model:
+Each base Cozzite image keeps a minimal customization model:
 
 - install `cosmic-desktop` and `cosmic-desktop-apps`
 - ensure Noto Sans/mono/emoji fonts are present
 - remove `gdm` and `gnome-shell` (best-effort)
 - enable `cosmic-greeter.service`
 
-## Variant matrix
+## Available images
 
 | Image | Upstream base (`latest`) | Branch | Notes |
 | --- | --- | --- | --- |
@@ -17,7 +17,8 @@ Each base Cozzite image follows the same minimal customization model:
 | `cozzite-nvidia` | `ghcr.io/ublue-os/bazzite-gnome-nvidia-open:latest` | `cozzite-nvidia` | NVIDIA Open variant |
 | `cozzite-dx` | `ghcr.io/ublue-os/bazzite-dx-gnome:latest` | `cozzite-dx` | DX GNOME variant |
 | `cozzite-dx-nvidia` | `ghcr.io/ublue-os/bazzite-dx-gnome-nvidia-open:latest` | `cozzite-dx-nvidia` | DX + NVIDIA Open variant |
-| `cozzite-personal` | `ghcr.io/markorm/cozzite-dx-nvidia:latest` | `cozzite-personal` | Personal spin (`micro`, `ghostty`, `btop`) |
+
+`cozzite-personal` is a separate branch/image (`cozzite-personal`) based on `cozzite-dx-nvidia`.
 
 ## Rebase commands
 
@@ -45,16 +46,21 @@ After rebasing:
 systemctl reboot
 ```
 
-## Build and release flow
+## Verify the rebase
 
-- Container publishing is defined in `.github/workflows/build.yml`.
-- The workflow builds all base Cozzite variants from a matrix.
-- Triggers: push/PR on `main`, manual dispatch, and nightly schedule.
-- Nightly rebuilds keep Cozzite current with upstream Bazzite `latest` bases.
+```bash
+rpm-ostree status
+```
 
-## Local development
+You should see the selected `ghcr.io/markorm/cozzite*` image in the booted deployment.
 
-- Default local target image: `cozzite`
-- Build locally: `just build`
-- Lint shell scripts: `just lint`
-- Validate Justfile syntax: `just check`
+If you need to roll back to the previous deployment:
+
+```bash
+sudo rpm-ostree rollback
+systemctl reboot
+```
+
+---
+
+Repository/maintainer instructions are documented in `REPO.md`.
