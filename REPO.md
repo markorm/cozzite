@@ -32,7 +32,6 @@ Do not add personal/workstation apps to base variants in `main`.
 - `Containerfile`: build entrypoint, `BASE_IMAGE` selection via build arg
 - `build_files/build.sh`: all system customization logic
 - `.github/workflows/build.yml`: matrix container build + push + sign
-- `.github/workflows/build-disk.yml`: manual disk/ISO workflow
 - `README.md`: end-user rebase documentation
 - `AGENTS.md`: coding-agent guidance
 
@@ -48,11 +47,6 @@ Do not add personal/workstation apps to base variants in `main`.
 - `just check`
 - `just lint`
 - `just build`
-
-Optional disk/ISO commands:
-
-- `just build-iso`
-- `just build-qcow2`
 
 ## Editing guardrails
 
