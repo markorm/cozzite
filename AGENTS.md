@@ -20,7 +20,7 @@ Keep the existing COSMIC baseline behavior:
 
 - `Containerfile`: default base image for this branch
 - `build_files/build.sh`: package set and service changes
-- `.github/workflows/build.yml`: publishes `cozzite-personal`
+- `.github/workflows/build-personal.yml`: publishes `cozzite-personal`
 - `README.md`: end-user rebase command
 
 ## Quick checks

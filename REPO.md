@@ -20,12 +20,12 @@ Maintainer notes for the `cozzite-personal` branch.
 
 - `Containerfile`
 - `build_files/build.sh`
-- `.github/workflows/build.yml`
+- `.github/workflows/build-personal.yml`
 - `README.md`
 
 ## Build workflow
 
-- `build.yml` publishes `ghcr.io/<owner>/cozzite-personal`
+- `build-personal.yml` publishes `ghcr.io/<owner>/cozzite-personal`
 - trigger branches: `cozzite-personal`
 - nightly schedule is enabled to keep in sync with upstream base
 
