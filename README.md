@@ -16,7 +16,7 @@ Each base Cozzite image keeps a minimal customization model:
 | `cozzite` | `ghcr.io/ublue-os/bazzite-gnome:latest` | `main` | Primary base image |
 | `cozzite-nvidia` | `ghcr.io/ublue-os/bazzite-gnome-nvidia-open:latest` | `cozzite-nvidia` | NVIDIA Open variant |
 | `cozzite-dx` | `ghcr.io/ublue-os/bazzite-dx-gnome:latest` | `cozzite-dx` | DX GNOME variant |
-| `cozzite-dx-nvidia` | `ghcr.io/ublue-os/bazzite-dx-gnome-nvidia:latest` | `cozzite-dx-nvidia` | DX + NVIDIA variant |
+| `cozzite-dx-nvidia` | `ghcr.io/ublue-os/bazzite-dx-nvidia-gnome:latest` | `cozzite-dx-nvidia` | DX + NVIDIA variant |
 
 `cozzite-personal` is a separate branch/image (`cozzite-personal`) based on `cozzite-dx-nvidia`.
 

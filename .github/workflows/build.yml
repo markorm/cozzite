@@ -45,8 +45,8 @@ jobs:
             image_desc: "Cozzite DX: Bazzite DX GNOME with COSMIC desktop"
             image_keywords: "bootc,ublue,bazzite,cosmic,dx"
           - image_name: cozzite-dx-nvidia
-            base_image: ghcr.io/ublue-os/bazzite-dx-gnome-nvidia:latest
-            image_desc: "Cozzite DX NVIDIA: Bazzite DX GNOME NVIDIA with COSMIC desktop"
+            base_image: ghcr.io/ublue-os/bazzite-dx-nvidia-gnome:latest
+            image_desc: "Cozzite DX NVIDIA: Bazzite DX NVIDIA GNOME with COSMIC desktop"
             image_keywords: "bootc,ublue,bazzite,cosmic,dx,nvidia"
 
     permissions:

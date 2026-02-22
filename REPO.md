@@ -22,7 +22,7 @@ Do not add personal/workstation apps to base variants in `main`.
 | `cozzite` | `ghcr.io/ublue-os/bazzite-gnome:latest` | `main` |
 | `cozzite-nvidia` | `ghcr.io/ublue-os/bazzite-gnome-nvidia-open:latest` | `cozzite-nvidia` |
 | `cozzite-dx` | `ghcr.io/ublue-os/bazzite-dx-gnome:latest` | `cozzite-dx` |
-| `cozzite-dx-nvidia` | `ghcr.io/ublue-os/bazzite-dx-gnome-nvidia:latest` | `cozzite-dx-nvidia` |
+| `cozzite-dx-nvidia` | `ghcr.io/ublue-os/bazzite-dx-nvidia-gnome:latest` | `cozzite-dx-nvidia` |
 | `cozzite-personal` | `ghcr.io/markorm/cozzite-dx-nvidia:latest` | `cozzite-personal` |
 
 `cozzite-personal` should include personal packages (`micro`, `ghostty`, `btop`) and does not belong in `main`.

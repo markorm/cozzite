@@ -18,7 +18,7 @@ Do not add personal/workstation apps to base variants in `main`.
 - `cozzite` <- `ghcr.io/ublue-os/bazzite-gnome:latest`
 - `cozzite-nvidia` <- `ghcr.io/ublue-os/bazzite-gnome-nvidia-open:latest`
 - `cozzite-dx` <- `ghcr.io/ublue-os/bazzite-dx-gnome:latest`
-- `cozzite-dx-nvidia` <- `ghcr.io/ublue-os/bazzite-dx-gnome-nvidia:latest`
+- `cozzite-dx-nvidia` <- `ghcr.io/ublue-os/bazzite-dx-nvidia-gnome:latest`
 
 `cozzite-personal` is a separate branch/image and not part of mainline base behavior.
 
