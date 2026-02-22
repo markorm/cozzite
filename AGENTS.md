@@ -1,160 +1,56 @@
 # AGENTS.md
 
-## Purpose
-- This repository builds a custom bootc image named `cozzite-nvidia-open`.
-- The current base is `ghcr.io/ublue-os/bazzite-gnome-nvidia-open:latest`.
-- The image customizations are defined primarily in `build_files/build.sh`.
-- Build automation is in `.github/workflows/build.yml` and `.github/workflows/build-disk.yml`.
+## Project concept
 
-## Rule File Discovery
-- Cursor rules: none found (`.cursorrules` and `.cursor/rules/` do not exist).
-- Copilot rules: none found (`.github/copilot-instructions.md` does not exist).
-- If these files are added later, treat them as authoritative project-specific guidance.
+Cozzite is a minimal COSMIC overlay for Bazzite GNOME-family images.
 
-## Repository Layout
-- `Containerfile`: image build entrypoint.
-- `build_files/build.sh`: package and service customization script.
-- `Justfile`: local build, lint, and VM helper commands.
-- `disk_config/disk.toml`: qcow2/raw disk build customization.
-- `disk_config/iso.toml`: ISO installer customization and kickstart switch target.
-- `.github/workflows/build.yml`: OCI image CI build and push to GHCR.
-- `.github/workflows/build-disk.yml`: disk artifact (ISO) workflow.
+Mainline Cozzite variants only do four things:
 
-## Core Build Commands
-- Build OCI image locally: `just build`.
-- Build OCI image with explicit tag: `just build localhost/cozzite-nvidia-open latest`.
-- Build ISO from local image: `just build-iso`.
-- Rebuild ISO (force image rebuild first): `just rebuild-iso`.
-- Build qcow2 image: `just build-qcow2`.
-- Build raw image: `just build-raw`.
-- Run ISO in local VM helper: `just run-vm-iso`.
+1. install `cosmic-desktop` and `cosmic-desktop-apps`
+2. ensure Noto Sans/mono/emoji fonts are installed
+3. remove `gdm` and `gnome-shell` (best-effort)
+4. enable `cosmic-greeter.service`
 
-## Lint and Format Commands
-- Lint shell scripts: `just lint`.
-- Format shell scripts: `just format`.
-- Validate Justfile syntax: `just check`.
-- Auto-fix Justfile syntax: `just fix`.
+Do not add personal/workstation apps to base variants in `main`.
 
-## Single-Test / Targeted Verification
-- There is no unit-test framework in this repo.
-- Use targeted checks as the single-test equivalent:
-  - Single shell script lint: `shellcheck build_files/build.sh`.
-  - Single Justfile syntax check: `just --unstable --fmt --check -f Justfile`.
-  - Single package resolution check in container:
-    - `sudo podman run --rm ghcr.io/ublue-os/bazzite-gnome-nvidia-open:latest dnf5 repoquery cosmic-session`.
-  - Single image smoke build:
-    - `podman build --pull=newer --tag localhost/cozzite-nvidia-open:smoke .`.
+## Variant map
 
-## CI Behavior
-- `build.yml` runs on push, PR, schedule, and manual dispatch.
-- `build.yml` publishes `cozzite-nvidia-open` to `ghcr.io/<owner>/cozzite-nvidia-open`.
-- `build-disk.yml` currently builds `anaconda-iso` artifacts only.
-- S3 upload is optional in `build-disk.yml`; artifact upload is sufficient.
+- `cozzite` <- `ghcr.io/ublue-os/bazzite-gnome:latest`
+- `cozzite-nvidia` <- `ghcr.io/ublue-os/bazzite-gnome-nvidia-open:latest`
+- `cozzite-dx` <- `ghcr.io/ublue-os/bazzite-dx-gnome:latest`
+- `cozzite-dx-nvidia` <- `ghcr.io/ublue-os/bazzite-dx-gnome-nvidia-open:latest`
 
-## Coding Conventions
+`cozzite-personal` is a separate branch/image and not part of mainline base behavior.
 
-### General
-- Prefer minimal, surgical edits.
-- Preserve existing file structure and naming patterns.
-- Keep changes deterministic and reproducible.
-- Do not add new tooling unless required.
+## Files that matter most
 
-### Shell Script Style (`build_files/*.sh`)
-- Use `#!/bin/bash` and strict mode: `set -ouex pipefail`.
-- Prefer explicit flags (`-y`, `--enablerepo=...`) over implicit defaults.
-- Keep commands idempotent where possible.
-- Use absolute paths for generated files in system locations.
-- Group commands by intent: install, configure, cleanup.
-- Avoid unnecessary subshells and command chains that hide failures.
+- `Containerfile`: base image selection and build entrypoint
+- `build_files/build.sh`: all OS customization logic
+- `.github/workflows/build.yml`: matrix build + publish to GHCR
+- `README.md`: user-facing variant and rebase documentation
 
-### Imports / External Sources
-- For package repos, import signing keys before install when needed.
-- Prefer official upstream repositories for third-party tools.
-- Pin by channel when exact version pinning is not practical.
-- Document non-default repositories in the script section where used.
+## Build workflow rules
 
-### Formatting
-- Shell: keep one command per line unless line continuation improves readability.
-- YAML: two-space indentation, avoid tabs.
-- TOML: keep arrays multiline when they are long.
-- Markdown: concise sections with actionable command examples.
+- Keep the variant matrix in `.github/workflows/build.yml` aligned with README.
+- Use `BASE_IMAGE` build arg per matrix entry.
+- Keep tags centered on `latest` + dated tags.
+- Keep nightly schedule enabled so upstream base updates are picked up.
 
-### Types and Data Handling
-- Treat shell variables as strings unless arithmetic is required.
-- Quote variable expansions by default (`"${var}"`).
-- For lists, prefer newline-delimited blocks in YAML/TOML for readability.
+## Shell script conventions
 
-### Naming Conventions
-- Image name: `cozzite-nvidia-open`.
-- Keep filenames descriptive (`VM-ISO-INSTALL.md`, `disk_config/iso.toml`).
-- Use lowercase for new file names unless a project convention differs.
+- Use `#!/bin/bash` and `set -ouex pipefail`.
+- Keep commands explicit and deterministic (`dnf5 -y ...`).
+- Group logic in order: install, configure, cleanup.
+- Use `|| true` only for intentional best-effort behavior.
 
-### Error Handling
-- Fail fast by default via strict mode.
-- Use explicit soft-fail only for non-critical best-effort steps.
-- Current acceptable best-effort step: GNOME package removal (`|| true`).
-- Always clean temp files in success paths.
+## Quick checks
 
-### Containerfile Guidance
-- Keep customization logic in `build_files/build.sh`, not inline in `Containerfile`.
-- Preserve `bootc container lint` as final validation layer.
-- Keep cache mounts and tmpfs mounts in place for build performance.
+- `just check`
+- `just lint`
+- `just build`
 
-### Workflow Guidance
-- Keep `IMAGE_NAME` consistent across workflows and `Justfile`.
-- Prefer stable pinned action SHAs for GitHub Actions.
-- If adding inputs, ensure non-dispatch triggers still have sane defaults.
+## Notes for coding agents
 
-## Change Validation Checklist
-- Run `just check`.
-- Run `just lint`.
-- Run `just build`.
-- Run `just build-iso`.
-- Confirm ISO exists at `output/bootiso/install.iso`.
-- Verify expected packages in built image where possible:
-  - `cosmic-session`, `cosmic-greeter`, `ghostty`, `code`.
-- Verify binary existence:
-  - `command -v opencode` in the built image/runtime.
-
-## Agent Workflow Tips
-- Read `Containerfile`, `build_files/build.sh`, and both workflows before editing.
-- Keep image name and registry references synchronized.
-- When editing `disk_config/iso.toml`, confirm the `bootc switch` target is correct.
-- If a build fails on package resolution, test with a one-off `podman run ... dnf5 ...`.
-- Prefer fixing root cause over adding broad `--skip-broken` behavior.
-
-## Expected Package Set
-- Desktop/session stack:
-  - `cosmic-session`, `cosmic-greeter`, `xdg-desktop-portal-cosmic`.
-- Developer apps:
-  - `ghostty`, `code`, `opencode`.
-- Display manager behavior:
-  - `display-manager.service` should point to COSMIC greeter.
-- GNOME reduction is best-effort:
-  - Remove `gdm` and `gnome-shell` when possible, but do not hard fail if dependency constraints change.
-
-## Troubleshooting Patterns
-- `dnf5` repo key failures:
-  - Ensure key import is present in script before install.
-  - Re-run with explicit `--enablerepo=...` for targeted checks.
-- COPR package not found:
-  - Verify COPR enable succeeded, then run `dnf5 repoquery <pkg>`.
-  - Disable COPR after install so it is not left enabled in the image.
-- ISO build failures:
-  - Confirm `disk_config/iso.toml` exists and is referenced by `Justfile`.
-  - Verify local image tag matches the build command parameters.
-- VM test failures:
-  - Confirm host has `/dev/kvm` and virtualization support enabled.
-  - Confirm installer can reach the registry image referenced by kickstart.
-
-## Preferred Validation Order
-- Fast checks first: `just check`.
-- Then lint: `just lint`.
-- Then container build: `just build`.
-- Then installer artifact build: `just build-iso`.
-- Finally run VM flow: `just run-vm-iso`.
-
-## Non-Goals
-- Do not implement host-side `bootc switch` testing in this repo workflow.
-- Do not require S3 deployment for ISO validation.
-- Do not add unrelated desktop packages without explicit request.
+- There are no Cursor/Copilot rule files in this repo right now.
+- Prefer small, surgical edits over broad refactors.
+- Keep changes consistent across `README.md`, `build.sh`, and workflow matrix.
