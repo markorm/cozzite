@@ -1,13 +1,13 @@
 ---
-name: Build container images
+name: Build cozzite-personal image
 
 on:
   pull_request:
     branches:
-      - main
+      - cozzite-personal
   push:
     branches:
-      - main
+      - cozzite-personal
     paths-ignore:
       - '**/README.md'
       - '**/AGENTS.md'
@@ -32,22 +32,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - image_name: cozzite
-            base_image: ghcr.io/ublue-os/bazzite-gnome:latest
-            image_desc: "Cozzite: Bazzite GNOME with COSMIC desktop"
-            image_keywords: "bootc,ublue,bazzite,cosmic"
-          - image_name: cozzite-nvidia
-            base_image: ghcr.io/ublue-os/bazzite-gnome-nvidia-open:latest
-            image_desc: "Cozzite NVIDIA: Bazzite GNOME NVIDIA Open with COSMIC desktop"
-            image_keywords: "bootc,ublue,bazzite,cosmic,nvidia"
-          - image_name: cozzite-dx
-            base_image: ghcr.io/ublue-os/bazzite-dx-gnome:latest
-            image_desc: "Cozzite DX: Bazzite DX GNOME with COSMIC desktop"
-            image_keywords: "bootc,ublue,bazzite,cosmic,dx"
-          - image_name: cozzite-dx-nvidia
-            base_image: ghcr.io/ublue-os/bazzite-dx-gnome-nvidia:latest
-            image_desc: "Cozzite DX NVIDIA: Bazzite DX GNOME NVIDIA with COSMIC desktop"
-            image_keywords: "bootc,ublue,bazzite,cosmic,dx,nvidia"
+          - image_name: cozzite-personal
+            base_image: ghcr.io/markorm/cozzite-dx-nvidia:latest
+            image_desc: "Cozzite Personal: Cozzite DX NVIDIA with personal package set"
+            image_keywords: "bootc,ublue,bazzite,cosmic,dx,nvidia,personal"
 
     permissions:
       contents: read
@@ -117,7 +105,7 @@ jobs:
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
-        if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/cozzite-personal'
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -125,7 +113,7 @@ jobs:
 
       - name: Push To GHCR
         uses: redhat-actions/push-to-registry@5ed88d269cf581ea9ef6dd6806d01562096bee9c # v2
-        if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/cozzite-personal'
         id: push
         env:
           REGISTRY_USER: ${{ github.actor }}
@@ -139,12 +127,12 @@ jobs:
 
       - name: Install Cosign
         uses: sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad # v4.0.0
-        if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/cozzite-personal'
         with:
           cosign-release: 'v2.6.1'
 
       - name: Sign container image
-        if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/cozzite-personal'
         run: |
           IMAGE_FULL="${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}"
           for tag in ${{ steps.metadata.outputs.tags }}; do

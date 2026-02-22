@@ -1,4 +1,4 @@
-export image_name := env("IMAGE_NAME", "cozzite")
+export image_name := env("IMAGE_NAME", "cozzite-personal")
 export default_tag := env("DEFAULT_TAG", "latest")
 export bib_image := env("BIB_IMAGE", "quay.io/centos-bootc/bootc-image-builder:latest")
 

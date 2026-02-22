@@ -1,66 +1,29 @@
-# Cozzite
+# Cozzite Personal
 
-Cozzite is a family of custom Bazzite-derived bootc images that replace the GNOME login/session default with COSMIC.
+`cozzite-personal` is a personal spin of Cozzite based on `ghcr.io/markorm/cozzite-dx-nvidia:latest`.
 
-Each base Cozzite image keeps a minimal customization model:
+On top of the base Cozzite DX NVIDIA image, this branch adds:
 
-- install `cosmic-desktop` and `cosmic-desktop-apps`
-- ensure Noto Sans/mono/emoji fonts are present
-- remove `gdm` and `gnome-shell` (best-effort)
-- enable `cosmic-greeter.service`
+- `ghostty`
+- `micro`
 
-## Available images
-
-| Image | Upstream base (`latest`) | Branch | Notes |
-| --- | --- | --- | --- |
-| `cozzite` | `ghcr.io/ublue-os/bazzite-gnome:latest` | `main` | Primary base image |
-| `cozzite-nvidia` | `ghcr.io/ublue-os/bazzite-gnome-nvidia-open:latest` | `cozzite-nvidia` | NVIDIA Open variant |
-| `cozzite-dx` | `ghcr.io/ublue-os/bazzite-dx-gnome:latest` | `cozzite-dx` | DX GNOME variant |
-| `cozzite-dx-nvidia` | `ghcr.io/ublue-os/bazzite-dx-gnome-nvidia:latest` | `cozzite-dx-nvidia` | DX + NVIDIA variant |
-
-`cozzite-personal` is a separate branch/image (`cozzite-personal`) based on `cozzite-dx-nvidia`.
-
-## Rebase commands
-
-Pick the image you want and run:
+## Rebase command
 
 ```bash
-sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/markorm/cozzite:latest
+sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/markorm/cozzite-personal:latest
 ```
 
-```bash
-sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/markorm/cozzite-nvidia:latest
-```
-
-```bash
-sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/markorm/cozzite-dx:latest
-```
-
-```bash
-sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/markorm/cozzite-dx-nvidia:latest
-```
-
-After rebasing:
+Then reboot:
 
 ```bash
 systemctl reboot
 ```
 
-## Verify the rebase
+## Verify
 
 ```bash
+rpm -q ghostty micro
 rpm-ostree status
 ```
 
-You should see the selected `ghcr.io/markorm/cozzite*` image in the booted deployment.
-
-If you need to roll back to the previous deployment:
-
-```bash
-sudo rpm-ostree rollback
-systemctl reboot
-```
-
----
-
-Repository/maintainer instructions are documented in `REPO.md`.
+Repository maintainer notes are in `REPO.md`.

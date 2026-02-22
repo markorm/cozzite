@@ -2,7 +2,7 @@
 FROM scratch AS ctx
 COPY build_files /
 
-ARG BASE_IMAGE=ghcr.io/ublue-os/bazzite-gnome:latest
+ARG BASE_IMAGE=ghcr.io/markorm/cozzite-dx-nvidia:latest
 FROM ${BASE_IMAGE}
 ARG BASE_IMAGE
 
