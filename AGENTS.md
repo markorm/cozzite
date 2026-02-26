@@ -9,12 +9,12 @@ Personal additions in this branch:
 - `ghostty`
 - `micro`
 
-Keep the existing COSMIC baseline behavior:
+`ghcr.io/markorm/cozzite-dx-nvidia:latest` already provides the COSMIC baseline.
 
-1. install `cosmic-desktop` and `cosmic-desktop-apps`
-2. ensure Noto Sans/mono/emoji fonts are installed
-3. remove `gdm` and `gnome-shell` (best-effort)
-4. enable `cosmic-greeter.service`
+Keep this branch additive-only:
+
+1. install personal packages (`ghostty`, `micro`)
+2. avoid reapplying base COSMIC setup steps from `main`
 
 ## Files that matter most
 

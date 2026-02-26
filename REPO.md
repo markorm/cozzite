@@ -9,12 +9,10 @@ Maintainer notes for the `cozzite-personal` branch.
 - `ghostty`
 - `micro`
 
-## Baseline behavior to preserve
+## Layering model
 
-- install `cosmic-desktop` and `cosmic-desktop-apps`
-- ensure Noto Sans/mono/emoji fonts are installed
-- remove `gdm` and `gnome-shell` (best-effort)
-- enable `cosmic-greeter.service`
+- `ghcr.io/markorm/cozzite-dx-nvidia:latest` provides the COSMIC baseline behavior.
+- Keep this branch additive-only: install personal packages and avoid duplicating base COSMIC setup steps.
 
 ## Key files
 
