@@ -2,8 +2,12 @@
 
 set -ouex pipefail
 
+# Use the COSMIC COPR for newer desktop packages.
+dnf5 -y copr enable adil192/cosmic-epoch
+
 # Install COSMIC desktop and default COSMIC applications.
 dnf5 -y group install cosmic-desktop cosmic-desktop-apps
+dnf5 -y copr disable adil192/cosmic-epoch
 
 # Ensure Noto fonts are present in COSMIC sessions.
 dnf5 -y install google-noto-sans-vf-fonts google-noto-sans-mono-vf-fonts google-noto-emoji-fonts

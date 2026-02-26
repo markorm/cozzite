@@ -8,7 +8,7 @@ Mainline Cozzite variants are minimal COSMIC overlays on Bazzite GNOME-family im
 
 Base variants should only:
 
-1. install `cosmic-desktop` and `cosmic-desktop-apps`
+1. install `cosmic-desktop` and `cosmic-desktop-apps` from `adil192/cosmic-epoch` COPR
 2. ensure Noto Sans/mono/emoji fonts are installed
 3. remove `gdm` and `gnome-shell` (best-effort)
 4. enable `cosmic-greeter.service`

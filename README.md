@@ -4,7 +4,7 @@ Cozzite is a family of custom Bazzite-derived bootc images that replace the GNOM
 
 Each base Cozzite image keeps a minimal customization model:
 
-- install `cosmic-desktop` and `cosmic-desktop-apps`
+- install `cosmic-desktop` and `cosmic-desktop-apps` from `adil192/cosmic-epoch` COPR
 - ensure Noto Sans/mono/emoji fonts are present
 - remove `gdm` and `gnome-shell` (best-effort)
 - enable `cosmic-greeter.service`
